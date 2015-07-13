@@ -3,13 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Yang&#39;s Blog</title>
+  <title>MinStack | Yang&#39;s Blog</title>
   <meta name="author" content="Yang Guoyu">
+  
+  <meta name="description" content="Problem:Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+
+push(x) — Push element x onto stack.
+pop() ">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  
+  <meta property="og:title" content="MinStack"/>
   <meta property="og:site_name" content="Yang&#39;s Blog"/>
 
   
@@ -46,8 +51,7 @@
 <div class="clearfix"></div>
 </header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper">
-  <article class="post">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
   
     <div class="gallery">
   <div class="photoset">
@@ -69,7 +73,7 @@
       
       
   
-    <h1 class="title"><a href="/2015/07/06/MinStack/">MinStack</a></h1>
+    <h1 class="title">MinStack</h1>
   
 
     </header>
@@ -235,95 +239,11 @@
       
         
         
-      
-      <div class="clearfix"></div>
-    </footer>
+  
+  <div class="tags">
+    <a href="/tags/Data-Structure/">Data Structure</a>, <a href="/tags/Stack/">Stack</a>
   </div>
-</article>
 
-
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-04-27T08:47:59.000Z"><a href="/2015/04/27/Count-Primes/">2015-04-27</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/04/27/Count-Primes/">Count Primes</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h3 id="Problem:">Problem:</h3><p>Count the number of prime numbers less than a non-negative number, n.</p>
-<p><strong>*Hint:</strong> The number n could be in the order of 100,000 to 5,000,000.*</p>
-<p><a href="https://leetcode.com/problems/count-primes/" target="_blank" rel="external">from LeetCode</a></p>
-<h3 id="References:">References:</h3><h3 id="Solution:">Solution:</h3><p>首先想到这种最简单的解法：</p>
-<pre><code><span class="keyword">class</span> <span class="title">Solution</span> {
-<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rotate</span>(<span class="params"><span class="keyword">int</span>[] nums, <span class="keyword">int</span> k</span>) </span>{
-    <span class="keyword">int</span> n = nums.length;
-    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;k; i++) {
-        <span class="keyword">int</span> temp = nums[n-<span class="number">1</span>];
-        <span class="keyword">for</span>(<span class="keyword">int</span> j=n-<span class="number">1</span>; j&gt;<span class="number">0</span>; j--) {
-            nums[j] = nums[j-<span class="number">1</span>];
-        }
-        nums[<span class="number">0</span>] = temp;
-    }
-}
-</code></pre><p>时间复杂度非常高，每次循环要把整个数组的所有元素都向后移一位，总共要进行 <code>k*n</code> 次操作。</p>
-<p>上网查询后发现这样一种巧妙的方法：</p>
-<pre><code><span class="keyword">public</span> <span class="keyword">class</span> Solution {
-    <span class="keyword">public</span> void rotate(<span class="built_in">int</span>[] nums, <span class="built_in">int</span> k) {
-        <span class="built_in">int</span> n = nums.length;
-        <span class="keyword">if</span>(k&gt;n) {
-            k = k%n;
-        }
-        <span class="keyword">if</span>(k!=<span class="number">0</span>){
-            reverseArray(nums, <span class="number">0</span>, n-<span class="number">1</span>);
-            reverseArray(nums, <span class="number">0</span>, k-<span class="number">1</span>);
-            reverseArray(nums, k, n-<span class="number">1</span>);
-        }
-
-    }
-
-    <span class="keyword">public</span> void reverseArray (<span class="built_in">int</span>[] <span class="built_in">array</span>, <span class="built_in">int</span> <span class="built_in">left</span>, <span class="built_in">int</span> <span class="built_in">right</span>) {
-        <span class="keyword">while</span>(<span class="built_in">left</span>&lt;<span class="built_in">right</span>) {
-            <span class="built_in">int</span> temp = <span class="built_in">array</span>[<span class="built_in">left</span>];
-            <span class="built_in">array</span>[<span class="built_in">left</span>] = <span class="built_in">array</span>[<span class="built_in">right</span>];
-            <span class="built_in">array</span>[<span class="built_in">right</span>] = temp;
-            <span class="built_in">left</span>++;
-            <span class="built_in">right</span>--;
-        }
-    }
-}
-</code></pre><p>将整个数组分成两段，下标从 0 到 k-1 为第一段，从 k 到 n-1 为第二段。首先对整个数组进行对折翻转，再分别对第一段和第二段进行对折翻转。总共要进行 <code>2n</code> 次操作，时间复杂度大大降低。</p>
-<p><a href="http://articles.leetcode.com/2010/04/rotating-array-in-place.html" target="_blank" rel="external">原文链接</a></p>
-<h3 id="Tips:">Tips:</h3><ul>
-<li>将数组作为参数传入一个方法后，若在方法中对数组进行操作，会改变数组的状态。</li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
         
       
       <div class="clearfix"></div>
@@ -332,104 +252,7 @@
 </article>
 
 
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-04-22T02:33:18.000Z"><a href="/2015/04/22/Rotate-Array/">2015-04-22</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/04/22/Rotate-Array/">Rotate Array</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h3 id="Problem:">Problem:</h3><p>Rotate an array of n elements to the right by k steps.</p>
-<p>For example, with n = 7 and k = 3, the array [1,2,3,4,5,6,7] is rotated to [5,6,7,1,2,3,4].</p>
-<p><a href="https://leetcode.com/problems/rotate-array/" target="_blank" rel="external">from LeetCode</a></p>
-<h3 id="Solution:">Solution:</h3><p>首先想到这种最简单的解法：</p>
-<pre><code><span class="keyword">class</span> <span class="title">Solution</span> {
-<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rotate</span>(<span class="params"><span class="keyword">int</span>[] nums, <span class="keyword">int</span> k</span>) </span>{
-    <span class="keyword">int</span> n = nums.length;
-    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;k; i++) {
-        <span class="keyword">int</span> temp = nums[n-<span class="number">1</span>];
-        <span class="keyword">for</span>(<span class="keyword">int</span> j=n-<span class="number">1</span>; j&gt;<span class="number">0</span>; j--) {
-            nums[j] = nums[j-<span class="number">1</span>];
-        }
-        nums[<span class="number">0</span>] = temp;
-    }
-}
-</code></pre><p>时间复杂度非常高，每次循环要把整个数组的所有元素都向后移一位，总共要进行 <code>k*n</code> 次操作。</p>
-<p>上网查询后发现这样一种巧妙的方法：</p>
-<pre><code><span class="keyword">public</span> <span class="keyword">class</span> Solution {
-    <span class="keyword">public</span> void rotate(<span class="built_in">int</span>[] nums, <span class="built_in">int</span> k) {
-        <span class="built_in">int</span> n = nums.length;
-        <span class="keyword">if</span>(k&gt;n) {
-            k = k%n;
-        }
-        <span class="keyword">if</span>(k!=<span class="number">0</span>){
-            reverseArray(nums, <span class="number">0</span>, n-<span class="number">1</span>);
-            reverseArray(nums, <span class="number">0</span>, k-<span class="number">1</span>);
-            reverseArray(nums, k, n-<span class="number">1</span>);
-        }
-
-    }
-
-    <span class="keyword">public</span> void reverseArray (<span class="built_in">int</span>[] <span class="built_in">array</span>, <span class="built_in">int</span> <span class="built_in">left</span>, <span class="built_in">int</span> <span class="built_in">right</span>) {
-        <span class="keyword">while</span>(<span class="built_in">left</span>&lt;<span class="built_in">right</span>) {
-            <span class="built_in">int</span> temp = <span class="built_in">array</span>[<span class="built_in">left</span>];
-            <span class="built_in">array</span>[<span class="built_in">left</span>] = <span class="built_in">array</span>[<span class="built_in">right</span>];
-            <span class="built_in">array</span>[<span class="built_in">right</span>] = temp;
-            <span class="built_in">left</span>++;
-            <span class="built_in">right</span>--;
-        }
-    }
-}
-</code></pre><p>将整个数组分成两段，下标从 0 到 k-1 为第一段，从 k 到 n-1 为第二段。首先对整个数组进行对折翻转，再分别对第一段和第二段进行对折翻转。总共要进行 <code>2n</code> 次操作，时间复杂度大大降低。</p>
-<p><a href="http://articles.leetcode.com/2010/04/rotating-array-in-place.html" target="_blank" rel="external">原文链接</a></p>
-<h3 id="Tips:">Tips:</h3><ul>
-<li>将数组作为参数传入一个方法后，若在方法中对数组进行操作，会改变数组的状态。</li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-<nav id="pagination">
-  
-  
-  <div class="clearfix"></div>
-</nav></div></div>
+</div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">
   <form action="//google.com/search" method="get" accept-charset="utf-8">
