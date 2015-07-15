@@ -1,0 +1,269 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Palindrome Linked List | Yang&#39;s Blog</title>
+  <meta name="author" content="Yang Guoyu">
+  
+  <meta name="description" content="Problem:Given a singly linked list, determine if it is a palindrome.
+*Follow up: Could you do it in O(n) time and O(1) space?*
+from LeetCode
+Solution:">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Palindrome Linked List"/>
+  <meta property="og:site_name" content="Yang&#39;s Blog"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="Yang&#39;s Blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Yang&#39;s Blog</a></h1>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+      <li><a href="/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-07-13T11:36:42.000Z"><a href="/2015/07/13/Palindrome-Linked-List/">2015-07-13</a></time>
+      
+      
+  
+    <h1 class="title">Palindrome Linked List</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h3 id="Problem:">Problem:</h3><p>Given a singly linked list, determine if it is a palindrome.</p>
+<p><strong>*Follow up:</strong> Could you do it in O(n) time and O(1) space?*</p>
+<p><a href="https://leetcode.com/problems/palindrome-linked-list/" target="_blank" rel="external">from LeetCode</a></p>
+<h3 id="Solution:">Solution:</h3><p>初始解法：</p>
+<pre><code><span class="keyword">public</span> class Solution {
+    <span class="keyword">public</span> <span class="built_in">boolean</span> isPalindrome(ListNode head) {
+        ArrayList&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();
+        <span class="keyword">while</span>(head != <span class="keyword">null</span>) {
+            list.<span class="built_in">add</span>(head.val);
+            head = head.next;
+        }
+        <span class="built_in">int</span> <span class="built_in">size</span> = list.<span class="built_in">size</span>();
+        <span class="keyword">if</span>(<span class="built_in">size</span> == <span class="number">0</span>) {
+            <span class="keyword">return</span> <span class="keyword">true</span>;
+        }
+        <span class="keyword">for</span>(<span class="built_in">int</span> i=<span class="number">0</span>; i&lt;<span class="built_in">size</span>/<span class="number">2</span>; i++) {
+            <span class="built_in">int</span> first = list.<span class="built_in">get</span>(i);
+            <span class="built_in">int</span> end = list.<span class="built_in">get</span>(<span class="built_in">size</span>-<span class="number">1</span>-i);
+            <span class="keyword">if</span>(first != end) {
+                <span class="keyword">return</span> <span class="keyword">false</span>;
+            }
+        }
+        <span class="keyword">return</span> <span class="keyword">true</span>;
+    }
+}
+</code></pre><p>运行时间为428ms。时间复杂度为O(n)，空间复杂度也为O(n)。注意要处理head为空的情况。</p>
+<p>题目要求空间复杂度为O(1)。通过查询资料，发现通过翻转链表的方法可以使时间复杂度为O(1)，具体描述如下：</p>
+<ol>
+<li>找到链表的中点。</li>
+<li>将后半部分链表进行翻转。</li>
+<li>检查前半部分链表和后半部分链表是否相同。</li>
+</ol>
+<p>修改后的代码如下：</p>
+<pre><code>public class Solution {
+    public boolean isPalindrome(ListNode head) {
+                int <span class="variable">size =</span> <span class="number">0</span>;
+        ListNode <span class="variable">node =</span> head;
+        while (node!=<span class="constant">null</span>) {
+            size++;
+            <span class="variable">node =</span> node.next;
+        }
+        int middle;
+        <span class="keyword">if</span> (size%<span class="number">2</span> == <span class="number">0</span>) {
+            <span class="variable">middle =</span> size/<span class="number">2</span>;
+        } <span class="keyword">else</span> {
+            <span class="variable">middle =</span> size/<span class="number">2</span> + <span class="number">1</span>;
+        }
+        int <span class="variable">count =</span> <span class="number">0</span>;
+        ListNode <span class="variable">middleNode =</span> head;
+        while(count != middle) {
+            <span class="variable">middleNode =</span> middleNode.next;
+            count++;
+        }
+        ListNode <span class="variable">currentNode =</span> middleNode;
+        ListNode <span class="variable">prevNode =</span> <span class="constant">null</span>;
+        ListNode nextNode;
+        while (currentNode != <span class="constant">null</span>) {
+            <span class="variable">nextNode =</span> currentNode.next;
+            currentNode.<span class="variable">next =</span> prevNode;
+            <span class="variable">prevNode =</span> currentNode;
+            <span class="variable">currentNode =</span> nextNode;
+        }
+        <span class="variable">middleNode =</span> prevNode;
+
+        for(int <span class="variable">i=</span><span class="number">0</span>; i&lt;size/<span class="number">2</span>; i++) {
+            <span class="keyword">if</span> (head.<span class="variable">val =</span>= middleNode.val) {
+                <span class="variable">head =</span> head.next;
+                <span class="variable">middleNode =</span> middleNode.next;
+            } <span class="keyword">else</span> {
+                return <span class="constant">false</span>;
+            }
+        }
+
+        return <span class="constant">true</span>;
+    }
+}
+</code></pre><p>运行时间为444ms。</p>
+<p>还有一种递归的方法可以解这个问题，因为其空间复杂度不为O(1)，故以后再讨论。</p>
+<h3 id="Tips:">Tips:</h3><ul>
+<li>用 “==” 和 “!=” 比较引用类型时，比较的是这两个是否是同一个对象，而不是两个值是否相等。若要比较其值，则要用equals()函数。</li>
+</ul>
+<h3 id="References:">References:</h3><ul>
+<li><a href="http://www.geeksforgeeks.org/function-to-check-if-a-singly-linked-list-is-palindrome/" target="_blank" rel="external">Function to check if a singly linked list is palindrome</a></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+  
+  <div class="tags">
+    <a href="/tags/Linked-List/">Linked List</a>, <a href="/tags/Palindrome/">Palindrome</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:yoursite.com">
+  </form>
+</div>
+
+  
+
+  
+<div class="widget tag">
+  <h3 class="title">最新文章</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2015/07/13/Palindrome-Linked-List/">Palindrome Linked List</a>
+      </li>
+    
+      <li>
+        <a href="/2015/07/06/Min-Stack/">Min Stack</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/27/Count-Primes/">Count Primes</a>
+      </li>
+    
+      <li>
+        <a href="/2015/04/22/Rotate-Array/">Rotate Array</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Data-Structure/">Data Structure</a><small>1</small></li>
+  
+    <li><a href="/tags/Linked-List/">Linked List</a><small>1</small></li>
+  
+    <li><a href="/tags/Palindrome/">Palindrome</a><small>1</small></li>
+  
+    <li><a href="/tags/Stack/">Stack</a><small>1</small></li>
+  
+    <li><a href="/tags/algorithm/">algorithm</a><small>2</small></li>
+  
+    <li><a href="/tags/array/">array</a><small>1</small></li>
+  
+    <li><a href="/tags/prime/">prime</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 Yang Guoyu
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
