@@ -65,6 +65,130 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2015-07-15T12:39:29.000Z"><a href="/2015/07/15/Minimum-Depth-of-Binary-Tree/">2015-07-15</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2015/07/15/Minimum-Depth-of-Binary-Tree/">Minimum-Depth-of-Binary-Tree</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h3 id="Problem:">Problem:</h3><p>Given a binary tree, find its minimum depth.</p>
+<p>The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.</p>
+<p><a href="https://leetcode.com/problems/minimum-depth-of-binary-tree/" target="_blank" rel="external">from LeetCode</a></p>
+<h3 id="Solution:">Solution:</h3><p>首先想到用递归方法求解，思路如下：</p>
+<ol>
+<li>判断根节点是否为空</li>
+<li>若根节点为空，则深度为0，返回。若根节点不为空，则判断左孩子和右孩子是否为空。</li>
+<li>若左右孩子都为空，说明此节点是叶子节点，深度为1，返回。若左右孩子不都为空，则递归求解不为空的孩子的深度，加1返回。</li>
+</ol>
+<p>代码：</p>
+<pre><code>public class Solution {
+    public int minDepth(TreeNode root) {
+        int <span class="variable">depth =</span> <span class="number">0</span>;
+        <span class="keyword">if</span>(<span class="variable">root =</span>= <span class="constant">null</span>) {
+            <span class="variable">depth =</span> <span class="number">0</span>;
+        }<span class="keyword">else</span> <span class="keyword">if</span>(root.<span class="variable">left =</span>= <span class="constant">null</span> &amp;&amp; root.<span class="variable">right =</span>= <span class="constant">null</span>) {
+            <span class="variable">depth =</span> <span class="number">1</span>;
+        }<span class="keyword">else</span> {
+            int <span class="variable">minLeft =</span> minDepth(root.left);
+            int <span class="variable">minRight =</span> minDepth(root.right);
+            <span class="keyword">if</span>(<span class="variable">minLeft =</span>= <span class="number">0</span> || <span class="variable">minRight =</span>= <span class="number">0</span>) {
+                <span class="variable">depth =</span> minLeft + minRight + <span class="number">1</span>;
+            }<span class="keyword">else</span> {
+                <span class="keyword">if</span>(minLeft &lt; minRight) {
+                    <span class="variable">depth =</span> minLeft + <span class="number">1</span>;
+                }<span class="keyword">else</span> {
+                    <span class="variable">depth =</span> minRight + <span class="number">1</span>;
+                }
+            }
+        }
+        return depth;
+    }
+}
+</code></pre><p>运行时间380ms。</p>
+<p>也可以采用广度优先策略遍历二叉树来计算，采用层序遍历的方法和队列的数据结构，思路为：</p>
+<ol>
+<li>判断根节点是否为空。</li>
+<li>若根节点为空，则深度为0，返回；若根节点不为空，将其加入队列，深度加1。</li>
+<li>取出队列第一个元素，判断其左右孩子是否为空。若左右孩子都为空，则此节点为叶子节点，返回。若左孩子不为空，将左孩子加入队列，若右孩子不为空，将右孩子加入队列。深度加1。</li>
+<li>若队列不为空，则重复3。</li>
+</ol>
+<p>代码：</p>
+<pre><code><span class="keyword">class</span> Solution {
+    <span class="keyword">public</span> <span class="built_in">int</span> minDepth(TreeNode root) {
+        <span class="built_in">int</span> depth = <span class="number">0</span>;
+        LinkedList&lt;TreeNode&gt; queue = <span class="keyword">new</span> LinkedList&lt;&gt;();
+        <span class="built_in">int</span> parentCount = <span class="number">0</span>;
+        <span class="built_in">int</span> childCount = <span class="number">0</span>;
+        <span class="keyword">if</span>(root == <span class="literal">null</span>) {
+            return depth;
+        }<span class="keyword">else</span> {
+            queue.add(root);
+            parentCount = <span class="number">1</span>;
+            depth++;
+            <span class="keyword">while</span>(!queue.<span class="built_in">isEmpty</span>()) {
+                TreeNode firstNode = queue.poll();
+                parentCount--;
+                <span class="keyword">if</span>(firstNode.<span class="built_in">left</span> == <span class="literal">null</span> &amp; firstNode.<span class="built_in">right</span> == <span class="literal">null</span>) {
+                    return depth;
+                }
+                <span class="keyword">if</span>(firstNode.<span class="built_in">left</span> != <span class="literal">null</span>) {
+                    queue.add(firstNode.<span class="built_in">left</span>);
+                    childCount++;
+                }
+                <span class="keyword">if</span>(firstNode.<span class="built_in">right</span> != <span class="literal">null</span>) {
+                    queue.add(firstNode.<span class="built_in">right</span>);
+                    childCount++;
+                }
+                <span class="keyword">if</span>(parentCount==<span class="number">0</span>) {
+                    depth++;
+                    parentCount = childCount;
+                    childCount = <span class="number">0</span>;
+                }
+            }
+        }
+        return depth;
+    }
+}
+</code></pre><p>运行时间400ms。</p>
+<p>同样也可以采用深度优先策略遍历二叉树。二叉树的深度优先遍历有三种遍历方法：前序遍历、中序遍历、后序遍历。通常通过栈的数据结构来实现。栈是实现递归最常用的数据结构。第一种所用的递归方法即为中序遍历。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2015-07-13T11:36:42.000Z"><a href="/2015/07/13/Palindrome-Linked-List/">2015-07-13</a></time>
       
       
@@ -574,6 +698,10 @@
   <ul class="entry">
     
       <li>
+        <a href="/2015/07/15/Minimum-Depth-of-Binary-Tree/">Minimum-Depth-of-Binary-Tree</a>
+      </li>
+    
+      <li>
         <a href="/2015/07/13/Palindrome-Linked-List/">Palindrome Linked List</a>
       </li>
     
@@ -598,7 +726,13 @@
   <h3 class="title">标签</h3>
   <ul class="entry">
   
+    <li><a href="/tags/Binary-Tree/">Binary Tree</a><small>1</small></li>
+  
+    <li><a href="/tags/Breadth-first-Search/">Breadth-first Search</a><small>1</small></li>
+  
     <li><a href="/tags/Data-Structure/">Data Structure</a><small>1</small></li>
+  
+    <li><a href="/tags/Depth-first-Search/">Depth-first Search</a><small>1</small></li>
   
     <li><a href="/tags/Linked-List/">Linked List</a><small>1</small></li>
   
