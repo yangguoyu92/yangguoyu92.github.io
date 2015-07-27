@@ -3,17 +3,16 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Count Primes | Yang&#39;s Blog</title>
+  <title>Lowest Common Ancestor of a Binary Search Tree | Yang&#39;s Blog</title>
   <meta name="author" content="Yang Guoyu">
   
-  <meta name="description" content="Problem:Count the number of prime numbers less than a non-negative number, n.
-*Hint: The number n could be in the order of 100,000 to 5,000,000.*
-from">
+  <meta name="description" content="Problem:Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.
+According to the definition of LCA on W">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Count Primes"/>
+  <meta property="og:title" content="Lowest Common Ancestor of a Binary Search Tree"/>
   <meta property="og:site_name" content="Yang&#39;s Blog"/>
 
   
@@ -68,61 +67,49 @@ from">
     <header>
       
         <div class="icon"></div>
-        <time datetime="2015-04-27T08:47:59.000Z"><a href="/2015/04/27/Count-Primes/">2015-04-27</a></time>
+        <time datetime="2015-07-27T03:25:56.000Z"><a href="/2015/07/27/Lowest-Common-Ancestor-of-a-Binary-Search-Tree/">2015-07-27</a></time>
       
       
   
-    <h1 class="title">Count Primes</h1>
+    <h1 class="title">Lowest Common Ancestor of a Binary Search Tree</h1>
   
 
     </header>
     <div class="entry">
       
-        <h3 id="Problem:">Problem:</h3><p>Count the number of prime numbers less than a non-negative number, n.</p>
-<p><strong>*Hint:</strong> The number n could be in the order of 100,000 to 5,000,000.*</p>
-<p><a href="https://leetcode.com/problems/count-primes/" target="_blank" rel="external">from LeetCode</a></p>
-<h3 id="References:">References:</h3><h3 id="Solution:">Solution:</h3><p>首先想到这种最简单的解法：</p>
-<pre><code><span class="keyword">class</span> <span class="title">Solution</span> {
-<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rotate</span>(<span class="params"><span class="keyword">int</span>[] nums, <span class="keyword">int</span> k</span>) </span>{
-    <span class="keyword">int</span> n = nums.length;
-    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;k; i++) {
-        <span class="keyword">int</span> temp = nums[n-<span class="number">1</span>];
-        <span class="keyword">for</span>(<span class="keyword">int</span> j=n-<span class="number">1</span>; j&gt;<span class="number">0</span>; j--) {
-            nums[j] = nums[j-<span class="number">1</span>];
-        }
-        nums[<span class="number">0</span>] = temp;
-    }
-}
-</code></pre><p>时间复杂度非常高，每次循环要把整个数组的所有元素都向后移一位，总共要进行 <code>k*n</code> 次操作。</p>
-<p>上网查询后发现这样一种巧妙的方法：</p>
+        <h3 id="Problem:">Problem:</h3><p>Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.</p>
+<p>According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes v and w as the lowest node in T that has both v and w as descendants (where we allow a node to be a descendant of itself).”</p>
+<p><a href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/" target="_blank" rel="external">from LeetCode</a></p>
+<h3 id="Solution:">Solution:</h3><p>因为BST具有一定的性质，因此，可以通过比较节点p和节点q的值与根节点值的大小来进行求解。</p>
+<ul>
+<li>若节点p和节点q的值均小于根节点的值，则对左子树进行递归查找；</li>
+<li>若节点p和节点q的值均大于根节点的值，则对右子树进行递归查找；</li>
+<li>若两个节点值一个比根节点值大，一个比根节点值小，则祖先节点为根节点。</li>
+</ul>
+<p>代码如下：</p>
 <pre><code><span class="keyword">public</span> <span class="keyword">class</span> Solution {
-    <span class="keyword">public</span> void rotate(<span class="built_in">int</span>[] nums, <span class="built_in">int</span> k) {
-        <span class="built_in">int</span> n = nums.length;
-        <span class="keyword">if</span>(k&gt;n) {
-            k = k%n;
+    <span class="keyword">public</span> TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        <span class="keyword">if</span>((root.<span class="keyword">val</span>-p.<span class="keyword">val</span>) * (root.<span class="keyword">val</span>-q.<span class="keyword">val</span>) &lt;= <span class="number">0</span>) {
+            <span class="keyword">return</span> root;
         }
-        <span class="keyword">if</span>(k!=<span class="number">0</span>){
-            reverseArray(nums, <span class="number">0</span>, n-<span class="number">1</span>);
-            reverseArray(nums, <span class="number">0</span>, k-<span class="number">1</span>);
-            reverseArray(nums, k, n-<span class="number">1</span>);
+        <span class="keyword">if</span>(p.<span class="keyword">val</span>&lt;root.<span class="keyword">val</span> &amp;&amp; q.<span class="keyword">val</span>&lt;root.<span class="keyword">val</span>) {
+            <span class="keyword">return</span> lowestCommonAncestor(root.left, p, q);
         }
-
-    }
-
-    <span class="keyword">public</span> void reverseArray (<span class="built_in">int</span>[] <span class="built_in">array</span>, <span class="built_in">int</span> <span class="built_in">left</span>, <span class="built_in">int</span> <span class="built_in">right</span>) {
-        <span class="keyword">while</span>(<span class="built_in">left</span>&lt;<span class="built_in">right</span>) {
-            <span class="built_in">int</span> temp = <span class="built_in">array</span>[<span class="built_in">left</span>];
-            <span class="built_in">array</span>[<span class="built_in">left</span>] = <span class="built_in">array</span>[<span class="built_in">right</span>];
-            <span class="built_in">array</span>[<span class="built_in">right</span>] = temp;
-            <span class="built_in">left</span>++;
-            <span class="built_in">right</span>--;
+        <span class="keyword">if</span>(p.<span class="keyword">val</span>&gt;root.<span class="keyword">val</span> &amp;&amp; q.<span class="keyword">val</span>&gt;root.<span class="keyword">val</span>) {
+            <span class="keyword">return</span> lowestCommonAncestor(root.right, p, q);
         }
+        <span class="keyword">return</span> <span class="keyword">null</span>;
     }
 }
-</code></pre><p>将整个数组分成两段，下标从 0 到 k-1 为第一段，从 k 到 n-1 为第二段。首先对整个数组进行对折翻转，再分别对第一段和第二段进行对折翻转。总共要进行 <code>2n</code> 次操作，时间复杂度大大降低。</p>
-<p><a href="http://articles.leetcode.com/2010/04/rotating-array-in-place.html" target="_blank" rel="external">原文链接</a></p>
-<h3 id="Tips:">Tips:</h3><ul>
-<li>将数组作为参数传入一个方法后，若在方法中对数组进行操作，会改变数组的状态。</li>
+</code></pre><h3 id="Tips:">Tips:</h3><ul>
+<li>BST：二叉查找树（Binary Search Tree），也称二叉搜索树、有序二叉树，是指一棵空树或者具有下列性质的二叉树：<ol>
+<li>若任意节点的左子树不空，则左子树上所有结点的值均小于或等于它的根结点的值；</li>
+<li>任意节点的右子树不空，则右子树上所有结点的值均大于它的根结点的值；</li>
+<li>任意节点的左、右子树也分别为二叉查找树。</li>
+<li>没有键值相等的节点（英语：no duplicate nodes）。<h3 id="References:">References:</h3></li>
+</ol>
+</li>
+<li><a href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E5%85%83%E6%90%9C%E5%B0%8B%E6%A8%B9" target="_blank" rel="external">维基百科——二叉查找树</a></li>
 </ul>
 
       
@@ -133,7 +120,7 @@ from">
         
   
   <div class="tags">
-    <a href="/tags/algorithm/">algorithm</a>, <a href="/tags/prime/">prime</a>
+    <a href="/tags/Binary-Search-Tree/">Binary Search Tree</a>
   </div>
 
         

@@ -65,11 +65,89 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2015-07-27T03:25:56.000Z"><a href="/2015/07/27/Lowest-Common-Ancestor-of-a-Binary-Search-Tree/">2015-07-27</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2015/07/27/Lowest-Common-Ancestor-of-a-Binary-Search-Tree/">Lowest Common Ancestor of a Binary Search Tree</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h3 id="Problem:">Problem:</h3><p>Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.</p>
+<p>According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes v and w as the lowest node in T that has both v and w as descendants (where we allow a node to be a descendant of itself).”</p>
+<p><a href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/" target="_blank" rel="external">from LeetCode</a></p>
+<h3 id="Solution:">Solution:</h3><p>因为BST具有一定的性质，因此，可以通过比较节点p和节点q的值与根节点值的大小来进行求解。</p>
+<ul>
+<li>若节点p和节点q的值均小于根节点的值，则对左子树进行递归查找；</li>
+<li>若节点p和节点q的值均大于根节点的值，则对右子树进行递归查找；</li>
+<li>若两个节点值一个比根节点值大，一个比根节点值小，则祖先节点为根节点。</li>
+</ul>
+<p>代码如下：</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">class</span> Solution {
+    <span class="keyword">public</span> TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        <span class="keyword">if</span>((root.<span class="keyword">val</span>-p.<span class="keyword">val</span>) * (root.<span class="keyword">val</span>-q.<span class="keyword">val</span>) &lt;= <span class="number">0</span>) {
+            <span class="keyword">return</span> root;
+        }
+        <span class="keyword">if</span>(p.<span class="keyword">val</span>&lt;root.<span class="keyword">val</span> &amp;&amp; q.<span class="keyword">val</span>&lt;root.<span class="keyword">val</span>) {
+            <span class="keyword">return</span> lowestCommonAncestor(root.left, p, q);
+        }
+        <span class="keyword">if</span>(p.<span class="keyword">val</span>&gt;root.<span class="keyword">val</span> &amp;&amp; q.<span class="keyword">val</span>&gt;root.<span class="keyword">val</span>) {
+            <span class="keyword">return</span> lowestCommonAncestor(root.right, p, q);
+        }
+        <span class="keyword">return</span> <span class="keyword">null</span>;
+    }
+}
+</code></pre><h3 id="Tips:">Tips:</h3><ul>
+<li>BST：二叉查找树（Binary Search Tree），也称二叉搜索树、有序二叉树，是指一棵空树或者具有下列性质的二叉树：<ol>
+<li>若任意节点的左子树不空，则左子树上所有结点的值均小于或等于它的根结点的值；</li>
+<li>任意节点的右子树不空，则右子树上所有结点的值均大于它的根结点的值；</li>
+<li>任意节点的左、右子树也分别为二叉查找树。</li>
+<li>没有键值相等的节点（英语：no duplicate nodes）。<h3 id="References:">References:</h3></li>
+</ol>
+</li>
+<li><a href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E5%85%83%E6%90%9C%E5%B0%8B%E6%A8%B9" target="_blank" rel="external">维基百科——二叉查找树</a></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2015-07-15T12:39:29.000Z"><a href="/2015/07/15/Minimum-Depth-of-Binary-Tree/">2015-07-15</a></time>
       
       
   
-    <h1 class="title"><a href="/2015/07/15/Minimum-Depth-of-Binary-Tree/">Minimum-Depth-of-Binary-Tree</a></h1>
+    <h1 class="title"><a href="/2015/07/15/Minimum-Depth-of-Binary-Tree/">Minimum Depth of Binary Tree</a></h1>
   
 
     </header>
@@ -698,7 +776,11 @@
   <ul class="entry">
     
       <li>
-        <a href="/2015/07/15/Minimum-Depth-of-Binary-Tree/">Minimum-Depth-of-Binary-Tree</a>
+        <a href="/2015/07/27/Lowest-Common-Ancestor-of-a-Binary-Search-Tree/">Lowest Common Ancestor of a Binary Search Tree</a>
+      </li>
+    
+      <li>
+        <a href="/2015/07/15/Minimum-Depth-of-Binary-Tree/">Minimum Depth of Binary Tree</a>
       </li>
     
       <li>
@@ -713,10 +795,6 @@
         <a href="/2015/04/27/Count-Primes/">Count Primes</a>
       </li>
     
-      <li>
-        <a href="/2015/04/22/Rotate-Array/">Rotate Array</a>
-      </li>
-    
   </ul>
 </div>
 
@@ -725,6 +803,8 @@
 <div class="widget tag">
   <h3 class="title">标签</h3>
   <ul class="entry">
+  
+    <li><a href="/tags/Binary-Search-Tree/">Binary Search Tree</a><small>1</small></li>
   
     <li><a href="/tags/Binary-Tree/">Binary Tree</a><small>1</small></li>
   
